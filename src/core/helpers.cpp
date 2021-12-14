@@ -12,6 +12,12 @@
 #include <string>
 #include <array>
 
+// windows port for popen/pclose 
+#ifdef WIN32
+#define popen _popen
+#define pclose _pclose
+#endif
+
 using namespace std;
 
 TransactionAmount BMB(double amount) {
@@ -77,7 +83,7 @@ std::string exec(const char* cmd) {
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
         result += buffer.data();
     }
-    return result.substr(0, result.size() - 1);
+    return result;
 }
 
 size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
